@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "588132337942",
+    "project_id": "rnexample-c1e9f",
+    "storage_bucket": "rnexample-c1e9f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:588132337942:android:20baa4a9411460fa896837",
+        "android_client_info": {
+          "package_name": "com.rnplaygnd.loginpage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "588132337942-dcivlf37r33d9o6c631vut9kipcvevk6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDd-PZfpwhap5R18llWfTtKc1ibUitgZic"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "588132337942-dcivlf37r33d9o6c631vut9kipcvevk6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:588132337942:android:d795a42ce9cecc12896837",
+        "android_client_info": {
+          "package_name": "com.rnplaygnd.loginpage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "588132337942-iavvclgb82ljfuuu7ds9dn2ndb1u8ond.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rnplaygnd.loginpage",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "588132337942-dcivlf37r33d9o6c631vut9kipcvevk6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDd-PZfpwhap5R18llWfTtKc1ibUitgZic"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "588132337942-dcivlf37r33d9o6c631vut9kipcvevk6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
