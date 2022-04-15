@@ -31,5 +31,7 @@ Every implementation shown in the React Native VT is shown in the App
 4. Navigation documentation : https://reactnavigation.org/docs/getting-started/
 5. Different Navigation props that can be applied to any form of navigation: https://reactnavigation.org/docs/navigation-prop
 6. Drawer Navigation documentation : https://reactnavigation.org/docs/drawer-navigator/#installation
-7. Dependency for Image capture using camera or access from library : https://github.com/react-native-image-picker/react-native-image-picker
- 
+
+## Camera and Modals
+7. Dependency for Image capture using camera or access from library: https://github.com/react-native-image-picker/react-native-image-picker
+8. Modals: https://reactnative.dev/docs/modal
