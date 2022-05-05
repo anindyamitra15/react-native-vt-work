@@ -11,6 +11,7 @@ import {
 import {TextInput, Caption, RadioButton, Button} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import * as session from './session';
 
 const LoginPage = ({navigation}) => {
   const [Name, setName] = useState('');
@@ -66,7 +67,7 @@ const LoginPage = ({navigation}) => {
       });
   };
 
-  const callEmailAuth = () => {
+  const callEmailAuth = async () => {
     setProcessing(true);
     auth()
       .createUserWithEmailAndPassword(Email, Password)
@@ -77,15 +78,23 @@ const LoginPage = ({navigation}) => {
           .collection('accounts')
           .doc(uid)
           .set({name: Name, email: Email, gender: Gender, phone: Phone})
-          .then(() => {
+          .then(async () => {
             ToastAndroid.show(`account details added`, ToastAndroid.SHORT);
-            navigation.navigate('Login App');
+            await session.HoldSession();
+            await session.SAVE_DATA('fbuid', uid);
+            console.log(await session.GET_DATA('fbuid'));
+            navigation.navigate('Profile');
           });
       })
       .catch(e => {
         setProcessing(false);
-        navigation.navigate('Login App');
+
         if (e.code === 'auth/email-already-in-use') {
+          let uid = auth().currentUser.uid;
+          session.SAVE_DATA('fbuid', uid).then(() => {
+            console.log(uid);
+            navigation.navigate('Profile');
+          });
           return ToastAndroid.show(
             `That email address is already in use!`,
             ToastAndroid.SHORT,
@@ -112,7 +121,7 @@ const LoginPage = ({navigation}) => {
       setShowDialog(false);
       setProcessing(false);
       ToastAndroid.show(`Phone number authenticated`, ToastAndroid.SHORT);
-      navigation.navigate('Login App');
+      navigation.navigate('Profile');
     } catch (err) {
       ToastAndroid.show('Invalid code', ToastAndroid.SHORT);
       navigation.navigate('Login App');
@@ -191,7 +200,9 @@ const LoginPage = ({navigation}) => {
                 label={`Phone Number`}
                 placeholder={`+91xxxxxxxxxx`}
                 value={Phone}
-                onFocus={()=>{Phone || setPhone('+91')}}
+                onFocus={() => {
+                  Phone || setPhone('+91');
+                }}
                 onChangeText={v => setPhone(v)}
                 keyboardType="phone-pad"
                 left={<TextInput.Icon name={`phone`} />}

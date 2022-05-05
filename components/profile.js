@@ -1,14 +1,25 @@
-import React, {useState} from 'react';
-import {View, Text} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, Pressable, ToastAndroid} from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {Provider, Avatar, FAB, Portal, Modal, Button} from 'react-native-paper';
+import auth from '@react-native-firebase/auth';
+import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
+import * as session from './session';
 
 const Profile = () => {
+  useEffect(() => {
+    //grab the auth
+    session.GET_DATA('fbuid').then(id => {
+      console.log(id);
+      setuserId(id);
+    });
+  });
   const [recentImage, setrecentImage] = useState(
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcdsC6_g4tHOfg6UsEMCzvW4cqwK6nXUCljg&usqp=CAU',
   );
-
   const [visibility, setVisibility] = useState(false);
+  const [userId, setuserId] = useState('');
 
   const captureImage = async type => {
     let options = {
@@ -25,22 +36,40 @@ const Profile = () => {
       } else {
         pic = await launchImageLibrary(options);
       }
-      if (pic.assets) {
+      if (pic?.assets) {
         setrecentImage(pic.assets[0].uri);
         setVisibility(false);
+      } else {
+        alert('Please try again');
       }
     } catch (e) {
-      console.log(e);
+      alert(e);
     }
   };
 
-  const containerStyle = {backgroundColor: 'white', padding: 20};
+  const updateProfile = async () => {
+    try {
+      return alert(userId)
+      let stg = storage().ref(`images/${userId}.jpg`);
+      await stg.putFile(recentImage);
+      await firestore()
+        .collection('accounts')
+        .doc(userId)
+        .set({
+          image: await stg.getDownloadURL(),
+        });
+      ToastAndroid.show('Image updated', ToastAndroid.SHORT);
+    } catch (e) {
+      alert(e);
+      console.log(e);
+    }
+  };
 
   return (
     <Provider>
       <Portal>
         <Modal
-          contentContainerStyle={containerStyle}
+          contentContainerStyle={{backgroundColor: 'white', padding: 20}}
           visible={visibility}
           onDismiss={() => {
             setVisibility(false);
@@ -76,6 +105,13 @@ const Profile = () => {
             setVisibility(true);
           }}
         />
+        <Pressable
+          style={{margin: 20}}
+          onPress={() => {
+            updateProfile();
+          }}>
+          <Text style={{color: 'blue'}}>Update Profile</Text>
+        </Pressable>
       </View>
     </Provider>
   );

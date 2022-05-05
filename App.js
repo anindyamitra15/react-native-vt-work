@@ -68,6 +68,7 @@ const DrawerNavigator = () => {
       <DrawerNav.Navigator>
         <DrawerNav.Screen name="Profile" component={Profile} />
         <DrawerNav.Screen name="View List" component={ViewList} />
+        <DrawerNav.Screen name="Login App" component={LoginPage} />
       </DrawerNav.Navigator>
     </NavigationContainer>
   );
