@@ -10,10 +10,8 @@ import * as session from './session';
 const Profile = () => {
   useEffect(() => {
     //grab the auth
-    session.GET_DATA('fbuid').then(id => {
-      console.log(id);
-      setuserId(id);
-    });
+    const id = auth().currentUser.uid;
+    setuserId(id);
   });
   const [recentImage, setrecentImage] = useState(
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcdsC6_g4tHOfg6UsEMCzvW4cqwK6nXUCljg&usqp=CAU',
@@ -49,14 +47,15 @@ const Profile = () => {
 
   const updateProfile = async () => {
     try {
-      return alert(userId)
       let stg = storage().ref(`images/${userId}.jpg`);
-      await stg.putFile(recentImage);
+      let task = await stg.putFile(recentImage);
+      let url = await stg.getDownloadURL();
+      console.log(url);
       await firestore()
         .collection('accounts')
         .doc(userId)
-        .set({
-          image: await stg.getDownloadURL(),
+        .update({
+          image:url,
         });
       ToastAndroid.show('Image updated', ToastAndroid.SHORT);
     } catch (e) {

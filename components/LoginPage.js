@@ -90,11 +90,7 @@ const LoginPage = ({navigation}) => {
         setProcessing(false);
 
         if (e.code === 'auth/email-already-in-use') {
-          let uid = auth().currentUser.uid;
-          session.SAVE_DATA('fbuid', uid).then(() => {
-            console.log(uid);
-            navigation.navigate('Profile');
-          });
+          navigation.navigate('Profile');
           return ToastAndroid.show(
             `That email address is already in use!`,
             ToastAndroid.SHORT,
