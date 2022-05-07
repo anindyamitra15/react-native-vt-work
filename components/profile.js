@@ -12,7 +12,14 @@ const Profile = () => {
     //grab the auth
     const id = auth().currentUser.uid;
     setuserId(id);
-  });
+    // firestore()
+    //   .collection('accounts')
+    //   .doc(id)
+    //   .get()
+    //   .then(({_data}) => {
+    //     recentImage(_data.image)
+    //   }).catch(e => alert('You are offline'));
+  }, [userId]);
   const [recentImage, setrecentImage] = useState(
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcdsC6_g4tHOfg6UsEMCzvW4cqwK6nXUCljg&usqp=CAU',
   );
@@ -47,16 +54,18 @@ const Profile = () => {
 
   const updateProfile = async () => {
     try {
-      let stg = storage().ref(`images/${userId}.jpg`);
-      let task = await stg.putFile(recentImage);
-      let url = await stg.getDownloadURL();
-      console.log(url);
-      await firestore()
-        .collection('accounts')
-        .doc(userId)
-        .update({
-          image:url,
-        });
+      let stg;
+      let task;
+      let url;
+      if (recentImage.indexOf('http') <= -1) {
+        //if it isn't a hyperlink
+        stg = storage().ref(`images/${userId}.jpg`);
+        task = await stg.putFile(recentImage);
+        url = await stg.getDownloadURL();
+      } else url = recentImage;
+      await firestore().collection('accounts').doc(userId).update({
+        image: url,
+      });
       ToastAndroid.show('Image updated', ToastAndroid.SHORT);
     } catch (e) {
       alert(e);
