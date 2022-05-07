@@ -73,16 +73,6 @@ const Profile = () => {
     }
   };
 
-  const refreshPhoto = () => {
-    firestore()
-      .collection('accounts')
-      .doc(userId)
-      .get()
-      .then(({_data}) => {
-        setrecentImage(_data.image);
-      }).catch(e => alert(e));
-  }
-
   return (
     <Provider>
       <Portal>
@@ -127,11 +117,6 @@ const Profile = () => {
           style={{margin: 20}}
           onPress={updateProfile}>
           <Text style={{color: 'blue'}}>Update Profile</Text>
-        </Pressable>
-        <Pressable
-          style={{margin: 20}}
-          onPress={refreshPhoto}>
-          <Text style={{color: 'blue'}}>Refresh Profile</Text>
         </Pressable>
       </View>
     </Provider>
