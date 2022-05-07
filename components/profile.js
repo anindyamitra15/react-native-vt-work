@@ -12,13 +12,13 @@ const Profile = () => {
     //grab the auth
     const id = auth().currentUser.uid;
     setuserId(id);
-    // firestore()
-    //   .collection('accounts')
-    //   .doc(id)
-    //   .get()
-    //   .then(({_data}) => {
-    //     recentImage(_data.image)
-    //   }).catch(e => alert('You are offline'));
+    firestore()
+      .collection('accounts')
+      .doc(id)
+      .get()
+      .then(({_data}) => {
+        setrecentImage(_data.image)
+      }).catch(e => alert('You are offline'));
   }, [userId]);
   const [recentImage, setrecentImage] = useState(
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcdsC6_g4tHOfg6UsEMCzvW4cqwK6nXUCljg&usqp=CAU',
@@ -73,6 +73,16 @@ const Profile = () => {
     }
   };
 
+  const refreshPhoto = () => {
+    firestore()
+      .collection('accounts')
+      .doc(userId)
+      .get()
+      .then(({_data}) => {
+        setrecentImage(_data.image);
+      }).catch(e => alert(e));
+  }
+
   return (
     <Provider>
       <Portal>
@@ -115,10 +125,13 @@ const Profile = () => {
         />
         <Pressable
           style={{margin: 20}}
-          onPress={() => {
-            updateProfile();
-          }}>
+          onPress={updateProfile}>
           <Text style={{color: 'blue'}}>Update Profile</Text>
+        </Pressable>
+        <Pressable
+          style={{margin: 20}}
+          onPress={refreshPhoto}>
+          <Text style={{color: 'blue'}}>Refresh Profile</Text>
         </Pressable>
       </View>
     </Provider>
